@@ -11,8 +11,10 @@ import java.util.Optional;
 
 @Repository
 public interface FruitRepository extends JpaRepository<Fruit, Long> {
-    Optional<Fruit> getFruitsByName(String name);
+    Optional<Fruit> findByName(String name);
     List<Fruit> getFruitsByColor(Color color);
     Optional<Fruit> findFirstByColorAndName(Color color, String name);
+    List<Fruit> findByNameStartingWithIgnoreCase(String name);
+
 
 }

@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class FruitRepositoryTest {
 
+
     @Autowired
     FruitRepository fruitRepository;
 
@@ -29,12 +30,6 @@ class FruitRepositoryTest {
     }
 
     @Test
-    void countMethod_right() {
-        var fruitCount = fruitRepository.count();
-        assertEquals(4, fruitCount);
-    }
-
-    @Test
     void saveANewFruit() {
         var fruitCountBeforeSave = fruitRepository.count();
         var apple = new Fruit("Apple", Color.RED);
@@ -44,18 +39,24 @@ class FruitRepositoryTest {
     }
 
     @Test
+    void countMethod_right() {
+        var fruitCount = fruitRepository.count();
+        assertEquals(4, fruitCount);
+    }
+
+    @Test
     void updateFruit() {
-        var fruitToUpdate = fruitRepository.getFruitsByName("Banana").get();
+        var fruitToUpdate = fruitRepository.findByName("Banana").get();
         fruitToUpdate.setName("WaterMelon");
         fruitRepository.save(fruitToUpdate);
-        assertTrue(fruitRepository.getFruitsByName("WaterMelon").isPresent());
+        assertTrue(fruitRepository.findByName("WaterMelon").isPresent());
     }
 
     @Test
     void deleteFruitById() {
         fruitRepository.save(new Fruit(null , "Papaya", Color.ORANGE, ""));
         var fruitCountBeforeSave = fruitRepository.count();
-        var fruitToDelete = fruitRepository.getFruitsByName("Papaya").get();
+        var fruitToDelete = fruitRepository.findByName("Papaya").get();
         fruitRepository.deleteById(fruitToDelete.getId());
         var fruitCountAfterSave = fruitRepository.count();
         assertEquals(-1, fruitCountAfterSave - fruitCountBeforeSave);
@@ -72,5 +73,11 @@ class FruitRepositoryTest {
     void getFruitByNameAndColor() {
         var yellowBanana = fruitRepository.findFirstByColorAndName(Color.YELLOW, "Banana");
         assertTrue(yellowBanana.isPresent());
+    }
+
+    @Test
+    void findByNameStartingWith_positive() {
+        var durStartingFruits = fruitRepository.findByNameStartingWithIgnoreCase("dur");
+        assertEquals(1, durStartingFruits.size());
     }
 }
