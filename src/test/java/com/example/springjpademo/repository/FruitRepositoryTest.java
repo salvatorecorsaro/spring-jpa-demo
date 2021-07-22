@@ -80,4 +80,41 @@ class FruitRepositoryTest {
         var durStartingFruits = fruitRepository.findByNameStartingWithIgnoreCase("dur");
         assertEquals(1, durStartingFruits.size());
     }
+
+    @Test
+    void findAllNoteNull_findOne () {
+        var nullNote = fruitRepository.findAllNoteNull();
+        assertEquals("Kiwi", nullNote.get(0).getName());
+    }
+
+    @Test
+    void findAllWithNoteOrderByNameAsc_testOrdered() {
+        var orderedCompleted = fruitRepository.findAllWithNoteOrderByNameAsc();
+        int lastElementIndex = orderedCompleted.size() - 1;
+        assertEquals("Strawberry", orderedCompleted.get(lastElementIndex).getName());
+    }
+
+    @Test
+    void findByNameUsingQuery_positive() {
+        var banana = fruitRepository.findByNameUsingQuery("Banana");
+        assertTrue(banana.isPresent());
+    }
+
+    @Test
+    void findByNameUsingNativeQuery_isPresent() {
+        var kiwi = fruitRepository.findByNameUsingNativeQuery("Kiwi");
+        assertTrue(kiwi.isPresent());
+    }
+
+    @Test
+    void testFindByColorUsingNativeQuery_rightSize() {
+        var red = fruitRepository.findByColorUsingNativeQuery(Color.RED.toString());
+        assertEquals(1, red.size());
+    }
+
+    @Test
+    void findAllNames_listOfNames() {
+        var onlyNames = fruitRepository.findAllNames();
+        assertTrue(!onlyNames.isEmpty());
+    }
 }
