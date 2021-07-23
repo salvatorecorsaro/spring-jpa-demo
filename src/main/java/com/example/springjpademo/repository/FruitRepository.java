@@ -3,10 +3,12 @@ package com.example.springjpademo.repository;
 import com.example.springjpademo.dao.Color;
 import com.example.springjpademo.dao.Fruit;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,5 +43,10 @@ public interface FruitRepository extends JpaRepository<Fruit, Long> {
 
     @Query(value="SELECT name from fruits", nativeQuery = true)
     List<String> findAllNames();
+
+    @Transactional
+    @Modifying
+    @Query(value="Drop table fruits", nativeQuery = true)
+    void dropFruit();
 
 }

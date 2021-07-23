@@ -117,4 +117,14 @@ class FruitRepositoryTest {
         var onlyNames = fruitRepository.findAllNames();
         assertTrue(!onlyNames.isEmpty());
     }
+
+    @Test
+    void dropFruit() {
+        fruitRepository.dropFruit();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
